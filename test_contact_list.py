@@ -84,6 +84,31 @@ def test_addContact(login):
     user_info['contact_id'] = response.json()['_id']
     assert response.status_code == 201
 
+def test_addContact_noAuth():
+    print("\nAdd Contact\n")
+    url = base_url + "/contacts"
+    payload = {
+        "firstName": "Suba",
+        "lastName": "Nara",
+        "birthdate": "1970-01-01",
+        "email": "jdoe@fake.com",
+        "phone": "8005555555",
+        "street1": "1 Main St.",
+        "street2": "Apartment A",
+        "city": "Anytown",
+        "stateProvince": "KS",
+        "postalCode": "12345",
+        "country": "USA"
+    }
+    headers = {
+        'Content-Type': 'application/json',
+        #'Authorization': login
+    }
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    #print("Contact ID: "+response.json()['_id'])
+    #user_info['contact_id'] = response.json()['_id']
+    assert response.status_code == 401
+
 def test_getContacts_afteradding(login):
     print("\nGet Contacts after adding\n")
     url = base_url + "/contacts"
